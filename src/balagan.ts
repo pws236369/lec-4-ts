@@ -68,4 +68,46 @@ export function balagan() {
   const myCar = new Car('Mazda', 2015);
   // Error example:
   const myCar2 = new Car('Mazda', '2015');
+
+  // Use it with Promise!
+  // Fetch data from the server with async function:
+  // This will return a Promise of an array of Students.
+  const fetchData = async (): Promise<Student[]> => {
+    const response = await fetch('https://json...');
+    const students = await response.json();
+    return students;
+  };
+
+  // Use it with async/await:
+  const getStudents = async () => {
+    const students = await fetchData();
+    students.forEach((student) => console.log(student.name)); // We get the student type! 🎉
+  };
+
+  // Utility types - Partial, Omit, Required
+  // Read more here: https://www.typescriptlang.org/docs/handbook/utility-types.html
+  interface User {
+    name: string;
+    age?: number;
+    email: string;
+  }
+
+  // Required - make all properties required:
+  type RequiredUser = Required<User>;
+  const regularUser: User = { name: 'Nissan', email: 'nisso@gmail.com' };
+  const requiredUser: RequiredUser = {
+    name: 'Nissan',
+    age: 28,
+    email: 'nisso@gmail.com',
+  }; // Good
+  const userShovav: RequiredUser = { name: 'Nissan', age: 28 }; // Error
+
+  // Partial - make all properties optional:
+  type PartialUser = Partial<User>;
+  const partialUser: PartialUser = { name: 'Nissan' }; // Good!
+  const user: User = { name: 'Nissan' }; // Error
+
+  // Omit - remove properties from a type:
+  type UserWithoutEmail = Omit<User, 'email'>;
+  const userWithoutEmail: UserWithoutEmail = { name: 'Nissan', age: 28 }; // Good!
 }
