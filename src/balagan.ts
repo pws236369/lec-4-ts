@@ -7,15 +7,65 @@ export function balagan() {
    * any, string, number, boolean, object, undefined, null, void, never, unknown
    */
 
-  // Give some type to each variable:
-  let appName: string = 'COOL APP!';
+  /**
+   * In TS we have interfaces and types. Very similar and we don't going to dive-in to the diffrences.
+   * Both can give us a lot of power while developing.
+   *  */
 
-  appName = 5; // TS will complain here
+  // We can build our own types, with Union:
+  type Grade = string | number; // Can be a string or a number - for example, "A" or "100
+  const myVar: Grade = 'hello';
+  const myVar2: Grade = 123;
 
-  const appVersion: number = 1.0;
-  const newVersion = appVersion + 0.1; // TS will infer the type
+  type Team = 'Maccabi 💚' | 'Petah Tikva 💙' | 'Tel Aviv 💛';
+  const myTeam: Team = 'Maccabi 💚'; // Good
+  const myTeam2: Team = 'Hapoel 🙅🏽‍♂️'; // Error
 
-  // You can go crazy with the 'any' type. Buy its not recommended:
-  let crazy: any = 5;
-  crazy = 'hello'; // No complaints from TS
+  // We can also use intersection:
+  type Sea = 'shark' | 'dolphin' | 'seal' | 'crab';
+  type Mammal = 'dolphin' | 'dog' | 'human' | 'seal';
+  type SeaMammal = Sea & Mammal;
+
+  const neo: SeaMammal = 'dolphin'; // Good
+  const nemo: SeaMammal = 'clownfish'; // Error
+
+  // And make types/interfaces for complex objects:
+  interface Student {
+    name: string;
+    age: number;
+    grade: Grade;
+    team?: Team; // Optional!
+  }
+
+  const nisso: Student = {
+    name: 'Nissan Ohana',
+    age: 28,
+    team: 'Hapoel', // There is no Hapoel in the Team type - Error
+    grade: '56',
+  };
+
+  // We also can use it for arrays. Just add [].
+  const animals: string[] = [];
+
+  animals.push('dog');
+  animals.push('shark');
+  animals.push('flying bison');
+  animals.forEach((animal) => console.log(animal));
+
+  // TS also helps with functions!
+  const myFunc = (newGrade: number, poorStudent: Student): Student => {
+    const newStudent = { ...poorStudent };
+    newStudent.grade = newGrade;
+    return newStudent;
+  };
+
+  // And, we can use it for classes:
+  class Car {
+    constructor(public model: string, public year: number) {}
+  }
+
+  // Use it:
+  const myCar = new Car('Mazda', 2015);
+  // Error example:
+  const myCar2 = new Car('Mazda', '2015');
 }
